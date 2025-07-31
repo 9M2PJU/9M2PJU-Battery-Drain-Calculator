@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>9M2PJU Battery Drain Calculator - Estimate Battery Life for Ham Radio</title>
-  <meta name="description" content="A clean and modern battery drain calculator for ham radio and electronics. Estimate runtime based on mAh, voltage, current, duty cycle, and power efficiency." />
+  <meta name="description" content="A clean and modern battery drain calculator for ham radio and electronics. Estimate runtime based on mAh, voltage, current, duty cycle, idle current, and power efficiency." />
   <meta name="keywords" content="kira bateri, jangka hayat bateri, radio amatur, malaysia, calculator bateri, kalkulator, battery drain calculator, battery runtime estimator, ham radio battery tool, 9M2PJU, Malaysia ham radio, mAh to hours calculator, portable power calculator, amateur radio battery usage, battery life estimator" />
   <meta name="author" content="9M2PJU" />
   <link rel="icon" href="assets/favicon.png" type="image/png" />
@@ -39,6 +39,11 @@
         </div>
 
         <div>
+          <label class="block font-semibold mb-1">Idle Current (mA) <span class="text-sm text-gray-500">(optional)</span></label>
+          <input id="idle" type="number" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="example: 50" />
+        </div>
+
+        <div>
           <label class="block font-semibold mb-1">Battery Voltage (V)</label>
           <input id="voltage" type="number" step="0.1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="example: 12" />
         </div>
@@ -68,7 +73,7 @@
 
   <footer class="w-full text-sm text-center text-gray-500 dark:text-gray-400 mt-6">
     <p class="max-w-md mx-auto px-4">
-      Estimate how long your battery will last based on mAh, voltage, current drain, duty cycle, and power efficiency.<br>
+      Estimate how long your battery will last based on mAh, voltage, current drain, idle current, duty cycle, and power efficiency.<br>
       Made by <a href="https://hamradio.my" class="underline">9M2PJU</a> 🇲🇾
     </p>
   </footer>
@@ -77,6 +82,7 @@
     function calculate() {
       const mAh = parseFloat(document.getElementById('capacity').value);
       const current_mA = parseFloat(document.getElementById('drain').value);
+      const idle_mA = parseFloat(document.getElementById('idle').value) || 0;
       const voltage = parseFloat(document.getElementById('voltage').value) || 12;
       const duty = parseFloat(document.getElementById('duty').value) || 100;
       const efficiency = parseFloat(document.getElementById('efficiency').value) || 100;
@@ -88,7 +94,9 @@
       }
 
       const wattHours = (mAh / 1000) * voltage;
-      const adjustedCurrentA = (current_mA / 1000) * (duty / 100) / (efficiency / 100);
+      const dutyFraction = duty / 100;
+      const idleFraction = 1 - dutyFraction;
+      const adjustedCurrentA = ((current_mA * dutyFraction) + (idle_mA * idleFraction)) / 1000 / (efficiency / 100);
       const runtimeHours = wattHours / adjustedCurrentA;
       const h = Math.floor(runtimeHours);
       const m = Math.round((runtimeHours - h) * 60);
@@ -108,3 +116,6 @@
   </script>
 </body>
 </html>
+<!-- This HTML file is a simple battery drain calculator for ham radio enthusiasts, designed to estimate battery life based on various parameters. It uses Tailwind CSS for styling and includes JavaScript for functionality. The calculator allows users to input battery capacity, drain current, idle current, voltage, duty cycle, and efficiency to calculate the estimated runtime of the battery. -->
+<!-- The design is responsive and includes a toggle for dark mode. The footer provides attribution to the creator, 9M2PJU, and a link to their website. The calculator is user-friendly, with clear labels and placeholders for input fields. It also includes error handling to ensure valid inputs are provided before performing calculations. The results are displayed in a clear format, showing the estimated runtime and additional details about the battery and current settings. -->
+<!-- The calculator is intended for use by ham radio operators and electronics enthusiasts in Malaysia, but can be useful for anyone needing to estimate battery life based on current drain and capacity. The code is structured to be easily maintainable and extendable, allowing for future enhancements or additional features if needed. -->      
