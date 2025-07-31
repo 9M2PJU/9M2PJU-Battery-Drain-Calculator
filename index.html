@@ -30,27 +30,27 @@
       <div class="space-y-4">
         <div>
           <label class="block font-semibold mb-1">Battery Capacity (mAh)</label>
-          <input id="capacity" type="number" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="e.g. 5000" />
+          <input id="capacity" type="number" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="default: 5000" />
         </div>
 
         <div>
           <label class="block font-semibold mb-1">Drain Current (mA)</label>
-          <input id="drain" type="number" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="e.g. 1000" />
+          <input id="drain" type="number" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="default: 1000" />
         </div>
 
         <div>
           <label class="block font-semibold mb-1">Battery Voltage (V) <span class="text-sm text-gray-500">(optional)</span></label>
-          <input id="voltage" type="number" step="0.1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="e.g. 12" />
+          <input id="voltage" type="number" step="0.1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="default: 12" />
         </div>
 
         <div>
           <label class="block font-semibold mb-1">Duty Cycle (%) <span class="text-sm text-gray-500">(optional)</span></label>
-          <input id="duty" type="number" step="1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="e.g. 50" />
+          <input id="duty" type="number" step="1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="default: 50" />
         </div>
 
         <div>
           <label class="block font-semibold mb-1">Efficiency (%) <span class="text-sm text-gray-500">(optional)</span></label>
-          <input id="efficiency" type="number" step="1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="e.g. 90" />
+          <input id="efficiency" type="number" step="1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="default: 90" />
         </div>
 
         <button onclick="calculate()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg">
