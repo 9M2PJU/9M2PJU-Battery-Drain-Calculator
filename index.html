@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🔋 9M2PJU Battery Drain Calculator</title>
+  <title>🔋 9M2PJU Battery Drain Calculator - Estimate Battery Life for Ham Radio</title>
+  <meta name="description" content="A clean and modern battery drain calculator for ham radio and electronics. Estimate runtime based on mAh, voltage, current, duty cycle, and power efficiency." />
+  <meta name="keywords" content="kira bateri, jangka hayat bateri, radio amatur, malaysia, calculator bateri, kalkulator, battery drain calculator, battery runtime estimator, ham radio battery tool, 9M2PJU, Malaysia ham radio, mAh to hours calculator, portable power calculator, amateur radio battery usage, battery life estimator" />
+  <meta name="author" content="9M2PJU" />
+  <link rel="icon" href="assets/favicon.png" type="image/png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    // Enable dark mode with Tailwind
     tailwind.config = {
       darkMode: 'class',
     }
@@ -16,12 +19,14 @@
   <div class="w-full max-w-md mx-auto">
     <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 space-y-6">
       <div class="flex justify-between items-center">
-        <h1 class="text-2xl font-bold">🔋 Battery Drain Calculator</h1>
+        <h1 class="text-2xl font-bold">
+          🔋 9M2PJU Battery Drain Calculator
+        </h1>
         <button onclick="toggleTheme()" class="text-sm px-3 py-1 rounded bg-gray-200 dark:bg-gray-700">
           Toggle Theme
         </button>
       </div>
-      
+
       <div class="space-y-4">
         <div>
           <label class="block font-semibold mb-1">Battery Capacity (mAh)</label>
@@ -34,8 +39,18 @@
         </div>
 
         <div>
-          <label class="block font-semibold mb-1">Duty Cycle (Optional, %)</label>
-          <input id="duty" type="number" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="e.g. 50" />
+          <label class="block font-semibold mb-1">Battery Voltage (V) <span class="text-sm text-gray-500">(optional)</span></label>
+          <input id="voltage" type="number" step="0.1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="e.g. 12" />
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Duty Cycle (%) <span class="text-sm text-gray-500">(optional)</span></label>
+          <input id="duty" type="number" step="1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="e.g. 50" />
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Efficiency (%) <span class="text-sm text-gray-500">(optional)</span></label>
+          <input id="efficiency" type="number" step="1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="e.g. 90" />
         </div>
 
         <button onclick="calculate()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg">
@@ -45,26 +60,32 @@
         <div id="result" class="text-center text-xl font-bold text-green-600 dark:text-green-400 mt-4"></div>
       </div>
     </div>
-    <p class="mt-6 text-sm text-center text-gray-500 dark:text-gray-400">Made by <a href="https://github.com/9M2PJU" class="underline">9M2PJU</a> for Malaysian ham radio operators 🇲🇾</p>
+
+    <p class="mt-6 text-sm text-center text-gray-500 dark:text-gray-400">
+      Estimate how long your battery will last based on mAh, voltage, current drain, duty cycle, and power efficiency.
+      <br>Made by <a href="https://github.com/9M2PJU" class="underline">9M2PJU</a> 🇲🇾
+    </p>
   </div>
 
   <script>
     function calculate() {
-      const capacity = parseFloat(document.getElementById('capacity').value);
-      const drain = parseFloat(document.getElementById('drain').value);
-      const dutyInput = parseFloat(document.getElementById('duty').value);
-      const duty = isNaN(dutyInput) ? 100 : dutyInput;
+      const mAh = parseFloat(document.getElementById('capacity').value);
+      const current_mA = parseFloat(document.getElementById('drain').value);
+      const voltage = parseFloat(document.getElementById('voltage').value) || 12; // Default 12V
+      const duty = parseFloat(document.getElementById('duty').value) || 100; // Default 100%
+      const efficiency = parseFloat(document.getElementById('efficiency').value) || 100; // Default 100%
 
-      if (!capacity || !drain || drain === 0) {
-        document.getElementById('result').innerText = "Please enter valid values.";
+      if (!mAh || !current_mA || current_mA === 0) {
+        document.getElementById('result').innerText = "Please enter valid capacity and drain current.";
         return;
       }
 
-      const adjustedDrain = drain * (duty / 100);
-      const hours = capacity / adjustedDrain;
+      const wattHours = (mAh / 1000) * voltage;
+      const adjustedCurrentA = (current_mA / 1000) * (duty / 100) / (efficiency / 100);
+      const runtimeHours = wattHours / adjustedCurrentA;
 
-      const h = Math.floor(hours);
-      const m = Math.round((hours - h) * 60);
+      const h = Math.floor(runtimeHours);
+      const m = Math.round((runtimeHours - h) * 60);
 
       document.getElementById('result').innerText = `Estimated runtime: ${h}h ${m}m`;
     }
