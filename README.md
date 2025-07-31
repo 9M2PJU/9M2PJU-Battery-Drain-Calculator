@@ -32,7 +32,7 @@ Estimate how long your battery-powered device will operate based on actual curre
 
 ## 📁 Hosting
 
-This calculator is fully static — no backend or server required. You can fork or clone this repo and deploy via GitHub Pages, Netlify, or any static hosting platform.
+This calculator is fully static.
 
 ## 📄 License
 
