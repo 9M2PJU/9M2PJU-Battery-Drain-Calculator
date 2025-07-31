@@ -117,8 +117,15 @@
       const wattHours = (mAh / 1000) * voltage;
       const dutyFraction = duty / 100;
       const idleFraction = 1 - dutyFraction;
-      const adjustedCurrentA = ((active_mA * dutyFraction) + (idle_mA * idleFraction)) / 1000 / (efficiency / 100);
-      const runtimeHours = wattHours / adjustedCurrentA;
+      
+      // Calculate average current in mA, then apply efficiency
+      const avgCurrentMA = (active_mA * dutyFraction) + (idle_mA * idleFraction);
+      const adjustedCurrentMA = avgCurrentMA / (efficiency / 100);
+      
+      // Calculate runtime: mAh / mA = hours (fixed calculation)
+      const runtimeHours = mAh / adjustedCurrentMA;
+      const adjustedCurrentA = adjustedCurrentMA / 1000;
+      
       const h = Math.floor(runtimeHours);
       const m = Math.round((runtimeHours - h) * 60);
 
