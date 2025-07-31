@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🔋 9M2PJU Battery Drain Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Enable dark mode with Tailwind
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md mx-auto">
+    <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 space-y-6">
+      <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold">🔋 Battery Drain Calculator</h1>
+        <button onclick="toggleTheme()" class="text-sm px-3 py-1 rounded bg-gray-200 dark:bg-gray-700">
+          Toggle Theme
+        </button>
+      </div>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block font-semibold mb-1">Battery Capacity (mAh)</label>
+          <input id="capacity" type="number" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="e.g. 5000" />
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Drain Current (mA)</label>
+          <input id="drain" type="number" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="e.g. 1000" />
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">Duty Cycle (Optional, %)</label>
+          <input id="duty" type="number" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="e.g. 50" />
+        </div>
+
+        <button onclick="calculate()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg">
+          ⚡ Calculate Runtime
+        </button>
+
+        <div id="result" class="text-center text-xl font-bold text-green-600 dark:text-green-400 mt-4"></div>
+      </div>
+    </div>
+    <p class="mt-6 text-sm text-center text-gray-500 dark:text-gray-400">Made by <a href="https://github.com/9M2PJU" class="underline">9M2PJU</a> for Malaysian ham radio operators 🇲🇾</p>
+  </div>
+
+  <script>
+    function calculate() {
+      const capacity = parseFloat(document.getElementById('capacity').value);
+      const drain = parseFloat(document.getElementById('drain').value);
+      const dutyInput = parseFloat(document.getElementById('duty').value);
+      const duty = isNaN(dutyInput) ? 100 : dutyInput;
+
+      if (!capacity || !drain || drain === 0) {
+        document.getElementById('result').innerText = "Please enter valid values.";
+        return;
+      }
+
+      const adjustedDrain = drain * (duty / 100);
+      const hours = capacity / adjustedDrain;
+
+      const h = Math.floor(hours);
+      const m = Math.round((hours - h) * 60);
+
+      document.getElementById('result').innerText = `Estimated runtime: ${h}h ${m}m`;
+    }
+
+    function toggleTheme() {
+      document.documentElement.classList.toggle('dark');
+    }
+  </script>
+</body>
+</html>
