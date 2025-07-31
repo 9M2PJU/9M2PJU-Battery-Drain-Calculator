@@ -22,7 +22,7 @@
   </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col min-h-screen">
-  <main class="w-full max-w-md mx-auto flex-grow px-4 py-4">
+  <main class="w-full max-w-md mx-auto flex-grow px-4 pt-4">
     <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 space-y-6">
       <div class="flex justify-between items-center">
         <h1 class="text-2xl font-bold">
@@ -78,7 +78,7 @@
     </div>
   </main>
 
-  <footer class="w-full text-sm text-center text-gray-500 dark:text-gray-400 py-4 mt-auto">
+  <footer class="w-full text-sm text-center text-gray-500 dark:text-gray-400 py-4">
     <p class="max-w-md mx-auto px-4">
       Estimate how long your battery will last based on active and idle current, voltage, duty cycle, and power efficiency.<br>
       Made by <a href="https://hamradio.my" class="underline">9M2PJU</a> 🇲🇾
