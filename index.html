@@ -9,6 +9,7 @@
   <meta name="author" content="9M2PJU" />
   <link rel="icon" href="assets/favicon.png" type="image/png" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -71,6 +72,7 @@
           <div id="runtime" class="text-xl font-bold text-green-600 dark:text-green-400"></div>
           <div id="details" class="text-sm text-gray-700 dark:text-gray-300"></div>
           <div id="disclaimer" class="text-xs text-gray-500 dark:text-gray-400 italic"></div>
+          <canvas id="chart" class="mt-4"></canvas>
         </div>
       </div>
     </div>
@@ -84,6 +86,7 @@
   </footer>
 
   <script>
+    let chart;
     function calculate() {
       const mAh = parseFloat(document.getElementById('capacity').value);
       const active_mA = parseFloat(document.getElementById('drain').value);
@@ -114,6 +117,28 @@
         ⚡ Adjusted Average Current: <strong>${adjustedCurrentA.toFixed(3)} A</strong>
       `;
       document.getElementById('disclaimer').innerText = "⚠️ Ideal case — real-world runtime may vary depending on battery health, temperature, and load fluctuations.";
+
+      const ctx = document.getElementById('chart').getContext('2d');
+      if (chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Watt-hours', 'Runtime (h)', 'Avg Current (A)'],
+          datasets: [{
+            label: 'Battery Stats',
+            data: [wattHours.toFixed(2), runtimeHours.toFixed(2), adjustedCurrentA.toFixed(2)],
+            backgroundColor: ['#3b82f6', '#10b981', '#f59e0b']
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
     }
 
     function toggleTheme() {
