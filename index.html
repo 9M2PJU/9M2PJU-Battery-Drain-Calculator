@@ -61,9 +61,9 @@
         <div id="result" class="text-center mt-4 space-y-2">
           <div id="runtime" class="text-xl font-bold text-green-600 dark:text-green-400"></div>
           <div id="details" class="text-sm text-gray-700 dark:text-gray-300"></div>
+          <div id="disclaimer" class="text-xs text-gray-500 dark:text-gray-400 italic"></div>
         </div>
 
-        <!-- Chart Canvas -->
         <canvas id="runtimeChart" class="w-full mt-6 hidden"></canvas>
       </div>
     </div>
@@ -91,7 +91,6 @@
       const wattHours = (mAh / 1000) * voltage;
       const adjustedCurrentA = (current_mA / 1000) * (duty / 100) / (efficiency / 100);
       const runtimeHours = wattHours / adjustedCurrentA;
-
       const h = Math.floor(runtimeHours);
       const m = Math.round((runtimeHours - h) * 60);
 
@@ -101,34 +100,32 @@
         ⚡ Adjusted Drain Current: <strong>${adjustedCurrentA.toFixed(3)} A</strong><br>
         ⚙️ Duty Cycle: ${duty}% • Efficiency: ${efficiency}%
       `;
+      document.getElementById('disclaimer').innerText = "⚠️ Ideal case — real-world runtime may vary depending on battery health, temperature, and load fluctuations.";
 
-      // Generate chart data
       const chartData = [];
-      for (let i = 100; i <= 2000; i += 100) {
-        const adjI = (i / 1000) * (duty / 100) / (efficiency / 100);
-        const runtime = wattHours / adjI;
-        chartData.push({ x: i, y: parseFloat(runtime.toFixed(2)) });
+      for (let i = 1000; i <= 10000; i += 1000) {
+        const wh = (i / 1000) * voltage;
+        const adjI = (current_mA / 1000) * (duty / 100) / (efficiency / 100);
+        const time = wh / adjI;
+        chartData.push({ x: i, y: parseFloat(time.toFixed(1)) });
       }
 
-      // Show chart
       document.getElementById('runtimeChart').classList.remove('hidden');
-
-      // Create or update Chart.js chart
+      const ctx = document.getElementById('runtimeChart').getContext('2d');
       if (window.runtimeChart) {
-        window.runtimeChart.data.datasets[0].data = chartData;
-        window.runtimeChart.update();
+        runtimeChart.data.datasets[0].data = chartData;
+        runtimeChart.update();
       } else {
-        const ctx = document.getElementById('runtimeChart').getContext('2d');
         window.runtimeChart = new Chart(ctx, {
           type: 'line',
           data: {
             datasets: [{
-              label: 'Runtime (hours)',
+              label: 'Capacity vs Runtime (h)',
               data: chartData,
-              borderColor: 'rgb(34, 197, 94)',
-              backgroundColor: 'rgba(34, 197, 94, 0.2)',
+              borderColor: 'rgb(59, 130, 246)',
+              backgroundColor: 'rgba(59, 130, 246, 0.2)',
               fill: true,
-              tension: 0.3,
+              tension: 0.4,
             }]
           },
           options: {
@@ -136,26 +133,15 @@
             scales: {
               x: {
                 type: 'linear',
-                title: {
-                  display: true,
-                  text: 'Drain Current (mA)'
-                },
-                ticks: {
-                  stepSize: 200
-                }
+                title: { display: true, text: 'Battery Capacity (mAh)' }
               },
               y: {
-                title: {
-                  display: true,
-                  text: 'Runtime (hours)'
-                },
+                title: { display: true, text: 'Estimated Runtime (hours)' },
                 beginAtZero: true
               }
             },
             plugins: {
-              legend: {
-                display: false
-              }
+              legend: { display: false }
             }
           }
         });
@@ -168,3 +154,9 @@
   </script>
 </body>
 </html>
+<!-- This HTML file is a simple battery drain calculator for ham radio enthusiasts, designed to estimate battery life based on various parameters. It uses Tailwind CSS for styling and Chart.js for visualizing runtime data. -->
+<!-- The calculator allows users to input battery capacity, drain current, voltage, duty cycle, and efficiency, and provides an estimated runtime along with detailed calculations. It also includes a toggle for dark mode. -->
+<!-- The code is structured to be clean and modern, with a focus on usability and responsiveness. It is suitable for both desktop and mobile devices, making it accessible for all users. -->
+<!-- The calculator is developed by 9M2PJU, a Malaysian ham radio operator, and is intended to help fellow radio enthusiasts estimate how long their batteries will last under various conditions. -->
+<!-- The HTML file is self-contained, with all necessary scripts and styles included, making it easy to deploy and use without additional dependencies. -->
+<!-- The design is minimalistic yet functional, ensuring that users can quickly input their data and receive accurate results without unnecessary distractions. --> 
