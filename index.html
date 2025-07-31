@@ -20,8 +20,8 @@
     }
   </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col min-h-screen p-4">
-  <main class="w-full max-w-md mx-auto flex-grow">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col min-h-screen">
+  <main class="w-full max-w-md mx-auto flex-grow px-4 pt-4">
     <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 space-y-6">
       <div class="flex justify-between items-center">
         <h1 class="text-2xl font-bold">
@@ -39,28 +39,28 @@
         </div>
 
         <div>
-          <label class="block font-semibold mb-1">Drain Current (mA)</label>
-          <input id="drain" type="number" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="example: 1000" />
+          <label class="block font-semibold mb-1">Active Current (mA)</label>
+          <input id="drain" type="number" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="example: 2000" />
         </div>
 
         <div>
-          <label class="block font-semibold mb-1">Idle Current (mA) <span class="text-sm text-gray-500">(optional)</span></label>
-          <input id="idle" type="number" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="example: 50" />
+          <label class="block font-semibold mb-1">Idle Current (mA)</label>
+          <input id="idle" type="number" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="example: 200" />
         </div>
 
         <div>
           <label class="block font-semibold mb-1">Battery Voltage (V)</label>
-          <input id="voltage" type="number" step="0.1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="example: 12" />
+          <input id="voltage" type="number" step="0.1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="example: 13.8" />
         </div>
 
         <div>
-          <label class="block font-semibold mb-1">Duty Cycle (%) <span class="text-sm text-gray-500">(optional)</span></label>
-          <input id="duty" type="number" step="1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="default: 100" />
+          <label class="block font-semibold mb-1">Duty Cycle (%)</label>
+          <input id="duty" type="number" step="1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="example: 40" />
         </div>
 
         <div>
-          <label class="block font-semibold mb-1">Efficiency (%) <span class="text-sm text-gray-500">(optional)</span></label>
-          <input id="efficiency" type="number" step="1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="default: 100" />
+          <label class="block font-semibold mb-1">Efficiency (%)</label>
+          <input id="efficiency" type="number" step="1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="example: 85" />
         </div>
 
         <button onclick="calculate()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg">
@@ -76,9 +76,9 @@
     </div>
   </main>
 
-  <footer class="w-full text-sm text-center text-gray-500 dark:text-gray-400 mt-6">
+  <footer class="w-full text-sm text-center text-gray-500 dark:text-gray-400 py-4">
     <p class="max-w-md mx-auto px-4">
-      Estimate how long your battery will last based on mAh, voltage, current drain, idle current, duty cycle, and power efficiency.<br>
+      Estimate how long your battery will last based on active and idle current, voltage, duty cycle, and power efficiency.<br>
       Made by <a href="https://hamradio.my" class="underline">9M2PJU</a> 🇲🇾
     </p>
   </footer>
@@ -86,22 +86,22 @@
   <script>
     function calculate() {
       const mAh = parseFloat(document.getElementById('capacity').value);
-      const current_mA = parseFloat(document.getElementById('drain').value);
-      const idle_mA = parseFloat(document.getElementById('idle').value) || 0;
+      const active_mA = parseFloat(document.getElementById('drain').value);
+      const idle_mA = parseFloat(document.getElementById('idle').value);
       const voltage = parseFloat(document.getElementById('voltage').value) || 12;
       const duty = parseFloat(document.getElementById('duty').value) || 100;
       const efficiency = parseFloat(document.getElementById('efficiency').value) || 100;
 
-      if (!mAh || !current_mA || current_mA === 0) {
+      if (!mAh || !active_mA || active_mA === 0) {
         document.getElementById('runtime').innerText = "";
-        document.getElementById('details').innerText = "Please enter valid capacity and drain current.";
+        document.getElementById('details').innerText = "Please enter valid capacity and active current.";
         return;
       }
 
       const wattHours = (mAh / 1000) * voltage;
       const dutyFraction = duty / 100;
       const idleFraction = 1 - dutyFraction;
-      const adjustedCurrentA = ((current_mA * dutyFraction) + (idle_mA * idleFraction)) / 1000 / (efficiency / 100);
+      const adjustedCurrentA = ((active_mA * dutyFraction) + (idle_mA * idleFraction)) / 1000 / (efficiency / 100);
       const runtimeHours = wattHours / adjustedCurrentA;
       const h = Math.floor(runtimeHours);
       const m = Math.round((runtimeHours - h) * 60);
@@ -109,8 +109,9 @@
       document.getElementById('runtime').innerText = `Estimated runtime: ${h}h ${m}m`;
       document.getElementById('details').innerHTML = `
         🔋 Battery Watt-hours: <strong>${wattHours.toFixed(2)} Wh</strong><br>
-        ⚡ Adjusted Drain Current: <strong>${adjustedCurrentA.toFixed(3)} A</strong><br>
-        ⚙️ Duty Cycle: <strong>${duty}%</strong> • Efficiency: <strong>${efficiency}%</strong>
+        ⚡ Active Current: <strong>${active_mA} mA</strong> • Idle Current: <strong>${idle_mA} mA</strong><br>
+        ⚖️ Duty Cycle: <strong>${duty}%</strong> • Efficiency: <strong>${efficiency}%</strong><br>
+        ⚡ Adjusted Average Current: <strong>${adjustedCurrentA.toFixed(3)} A</strong>
       `;
       document.getElementById('disclaimer').innerText = "⚠️ Ideal case — real-world runtime may vary depending on battery health, temperature, and load fluctuations.";
     }
