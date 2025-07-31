@@ -1,50 +1,43 @@
 # 🔋 9M2PJU Battery Drain Calculator
 
-**A simple, elegant, and responsive web app for estimating how long your equipment can run based on battery capacity and drain current.**
+Estimate how long your battery-powered device will operate based on actual current draw — including idle time. This modern, responsive web app is designed especially for amateur radio operators, field deployments, makers, and low-power electronics projects.
 
-Built for Malaysian ham radio operators and electronics enthusiasts.
+🌐 **Live Demo**: [battery.hamradio.my](https://battery.hamradio.my)
 
----
+## 🔧 Features
 
-## 📦 Features
+- Estimate battery runtime using:
+  - Battery capacity (mAh)
+  - Active current (mA)
+  - Idle current (mA)
+  - Battery voltage (V)
+  - Duty cycle (%)
+  - Power efficiency (%)
+- Detailed result output with:
+  - Total runtime
+  - Battery watt-hours
+  - Active & idle time breakdown
+  - Adjusted average current
+- Animated result section and bar chart for visualization
+- Mobile-friendly & dark mode ready
+- Built with Tailwind CSS & Chart.js
+- Fully static and works on GitHub Pages
 
-- 🎛️ Input battery capacity in mAh
-- ⚡ Input drain current in mA
-- 🧠 Optional duty cycle support (e.g. 50% TX/Standby)
-- 🌙 Dark and Light mode toggle
-- 📱 Fully mobile-friendly
-- 🚀 Instant calculation with JavaScript
+## 📦 How to Use
 
----
+1. Open [battery.hamradio.my](https://battery.hamradio.my)
+2. Input battery specs and current consumption
+3. Click **Calculate Runtime**
+4. View breakdown, chart, and interpretation of your setup
 
-## 📡 Made For
+## 📁 Hosting
 
-Ham radio operators, field operators, solar enthusiasts, and makers who want quick battery runtime estimates.
+This calculator is fully static — no backend or server required. You can fork or clone this repo and deploy via GitHub Pages, Netlify, or any static hosting platform.
 
----
-
-## 🛠️ How to Use
-
-1. Enter battery capacity in mAh.
-2. Enter device current draw in mA.
-3. (Optional) Add a duty cycle if your device isn't always transmitting.
-4. Click **Calculate Runtime**.
-
----
-
-## 🌍 Live Demo
-
-👉 [9M2PJU Battery Drain Calculator](https://battery.hamradio.my)
-
----
-
-## 🧑‍💻 Credits
-
-Created by **9M2PJU**  
-📡 Malaysian Ham Radio Operator  
-
----
-
-## 📜 License
+## 📄 License
 
 MIT License
+
+## 🤝 Acknowledgements
+
+Created by [9M2PJU](https://hamradio.my) 🇲🇾 — For the amateur radio and maker community.
