@@ -2,7 +2,7 @@
 
 **A simple, elegant, and responsive web app for estimating how long your equipment can run based on battery capacity and drain current.**
 
-Built for Malaysian ham radio operators and electronics enthusiasts. Hosted on [GitHub Pages](https://9m2pju.github.io/9M2PJU-Battery-Drain-Calculator/).
+Built for Malaysian ham radio operators and electronics enthusiasts.
 
 ---
 
@@ -14,12 +14,6 @@ Built for Malaysian ham radio operators and electronics enthusiasts. Hosted on [
 - 🌙 Dark and Light mode toggle
 - 📱 Fully mobile-friendly
 - 🚀 Instant calculation with JavaScript
-
----
-
-## 📷 Screenshot
-
-![screenshot](https://raw.githubusercontent.com/9M2PJU/9M2PJU-Battery-Drain-Calculator/main/assets/screenshot.png)
 
 ---
 
@@ -40,7 +34,7 @@ Ham radio operators, field operators, solar enthusiasts, and makers who want qui
 
 ## 🌍 Live Demo
 
-👉 [9M2PJU Battery Drain Calculator (GitHub Pages)](https://9m2pju.github.io/9M2PJU-Battery-Drain-Calculator/)
+👉 [9M2PJU Battery Drain Calculator](https://battery.hamradio.my)
 
 ---
 
@@ -48,7 +42,6 @@ Ham radio operators, field operators, solar enthusiasts, and makers who want qui
 
 Created by **9M2PJU**  
 📡 Malaysian Ham Radio Operator  
-🔗 [github.com/9M2PJU](https://github.com/9M2PJU)
 
 ---
 
