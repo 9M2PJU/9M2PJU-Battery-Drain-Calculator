@@ -112,13 +112,15 @@
       const activeTime = runtimeHours * dutyFraction;
       const idleTime = runtimeHours * idleFraction;
 
+      let idleInfo = idleFraction > 0 ? ` • Idle Runtime: <strong>${idleTime.toFixed(2)} h</strong>` : "";
+
       document.getElementById('runtime').innerText = `Estimated runtime: ${h}h ${m}m`;
       document.getElementById('details').innerHTML = `
         🔋 Battery Watt-hours: <strong>${wattHours.toFixed(2)} Wh</strong><br>
         ⚡ Active Current: <strong>${active_mA} mA</strong> • Idle Current: <strong>${idle_mA} mA</strong><br>
         ⚖️ Duty Cycle: <strong>${duty}%</strong> • Efficiency: <strong>${efficiency}%</strong><br>
         ⚡ Adjusted Avg Current: <strong>${adjustedCurrentA.toFixed(3)} A</strong><br>
-        ⏱ Active Runtime: <strong>${activeTime.toFixed(2)} h</strong> • Idle Runtime: <strong>${idleTime.toFixed(2)} h</strong>
+        ⏱ Active Runtime: <strong>${activeTime.toFixed(2)} h</strong>${idleInfo}
       `;
       document.getElementById('disclaimer').innerText = "⚠️ Ideal case — real-world runtime may vary depending on battery health, temperature, and load fluctuations.";
 
