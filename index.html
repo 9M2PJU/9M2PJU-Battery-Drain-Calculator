@@ -9,6 +9,7 @@
   <meta name="author" content="9M2PJU" />
   <link rel="icon" href="assets/favicon.png" type="image/png" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -57,7 +58,13 @@
           ⚡ Calculate Runtime
         </button>
 
-        <div id="result" class="text-center text-xl font-bold text-green-600 dark:text-green-400 mt-4"></div>
+        <div id="result" class="text-center mt-4 space-y-2">
+          <div id="runtime" class="text-xl font-bold text-green-600 dark:text-green-400"></div>
+          <div id="details" class="text-sm text-gray-700 dark:text-gray-300"></div>
+        </div>
+
+        <!-- Chart Canvas -->
+        <canvas id="runtimeChart" class="w-full mt-6 hidden"></canvas>
       </div>
     </div>
 
@@ -71,12 +78,13 @@
     function calculate() {
       const mAh = parseFloat(document.getElementById('capacity').value);
       const current_mA = parseFloat(document.getElementById('drain').value);
-      const voltage = parseFloat(document.getElementById('voltage').value) || 12; // Default 12V
-      const duty = parseFloat(document.getElementById('duty').value) || 100; // Default 100%
-      const efficiency = parseFloat(document.getElementById('efficiency').value) || 100; // Default 100%
+      const voltage = parseFloat(document.getElementById('voltage').value) || 12;
+      const duty = parseFloat(document.getElementById('duty').value) || 100;
+      const efficiency = parseFloat(document.getElementById('efficiency').value) || 100;
 
       if (!mAh || !current_mA || current_mA === 0) {
-        document.getElementById('result').innerText = "Please enter valid capacity and drain current.";
+        document.getElementById('runtime').innerText = "";
+        document.getElementById('details').innerText = "Please enter valid capacity and drain current.";
         return;
       }
 
@@ -87,7 +95,71 @@
       const h = Math.floor(runtimeHours);
       const m = Math.round((runtimeHours - h) * 60);
 
-      document.getElementById('result').innerText = `Estimated runtime: ${h}h ${m}m`;
+      document.getElementById('runtime').innerText = `Estimated runtime: ${h}h ${m}m`;
+      document.getElementById('details').innerHTML = `
+        🔋 Battery Watt-hours: <strong>${wattHours.toFixed(2)} Wh</strong><br>
+        ⚡ Adjusted Drain Current: <strong>${adjustedCurrentA.toFixed(3)} A</strong><br>
+        ⚙️ Duty Cycle: ${duty}% • Efficiency: ${efficiency}%
+      `;
+
+      // Generate chart data
+      const chartData = [];
+      for (let i = 100; i <= 2000; i += 100) {
+        const adjI = (i / 1000) * (duty / 100) / (efficiency / 100);
+        const runtime = wattHours / adjI;
+        chartData.push({ x: i, y: parseFloat(runtime.toFixed(2)) });
+      }
+
+      // Show chart
+      document.getElementById('runtimeChart').classList.remove('hidden');
+
+      // Create or update Chart.js chart
+      if (window.runtimeChart) {
+        window.runtimeChart.data.datasets[0].data = chartData;
+        window.runtimeChart.update();
+      } else {
+        const ctx = document.getElementById('runtimeChart').getContext('2d');
+        window.runtimeChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            datasets: [{
+              label: 'Runtime (hours)',
+              data: chartData,
+              borderColor: 'rgb(34, 197, 94)',
+              backgroundColor: 'rgba(34, 197, 94, 0.2)',
+              fill: true,
+              tension: 0.3,
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              x: {
+                type: 'linear',
+                title: {
+                  display: true,
+                  text: 'Drain Current (mA)'
+                },
+                ticks: {
+                  stepSize: 200
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Runtime (hours)'
+                },
+                beginAtZero: true
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              }
+            }
+          }
+        });
+      }
     }
 
     function toggleTheme() {
