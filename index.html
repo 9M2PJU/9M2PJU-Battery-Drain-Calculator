@@ -15,8 +15,8 @@
     }
   </script>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen flex items-center justify-center p-4">
-  <div class="w-full max-w-md mx-auto">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen flex flex-col items-center justify-between p-4">
+  <main class="w-full max-w-md mx-auto flex-grow">
     <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-6 space-y-6">
       <div class="flex justify-between items-center">
         <h1 class="text-2xl font-bold">
@@ -39,7 +39,7 @@
         </div>
 
         <div>
-          <label class="block font-semibold mb-1">Battery Voltage (V) <span class="text-sm text-gray-500"></span></label>
+          <label class="block font-semibold mb-1">Battery Voltage (V)</label>
           <input id="voltage" type="number" step="0.1" class="w-full p-2 rounded border dark:border-gray-700 bg-gray-50 dark:bg-gray-700" placeholder="example: 12" />
         </div>
 
@@ -64,12 +64,14 @@
         </div>
       </div>
     </div>
+  </main>
 
-    <p class="mt-6 text-sm text-center text-gray-500 dark:text-gray-400">
-      Estimate how long your battery will last based on mAh, voltage, current drain, duty cycle, and power efficiency.
-      <br>Made by <a href="https://hamradio.my" class="underline">9M2PJU</a> 🇲🇾
+  <footer class="w-full text-sm text-center text-gray-500 dark:text-gray-400 mt-6">
+    <p class="max-w-md mx-auto px-4">
+      Estimate how long your battery will last based on mAh, voltage, current drain, duty cycle, and power efficiency.<br>
+      Made by <a href="https://hamradio.my" class="underline">9M2PJU</a> 🇲🇾
     </p>
-  </div>
+  </footer>
 
   <script>
     function calculate() {
