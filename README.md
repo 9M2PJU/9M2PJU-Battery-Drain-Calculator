@@ -36,7 +36,7 @@ This calculator is fully static.
 
 ## 📄 License
 
-MIT License
+GPLv3
 
 ## 🤝 Acknowledgements
 
