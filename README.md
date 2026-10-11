@@ -46,4 +46,4 @@ Created by [9M2PJU](https://hamradio.my) 🇲🇾 — For the amateur radio and 
 
 If you find this project useful, please consider supporting it:
 
-[![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=9m2pju%40hamradio.my&currency_code=MYR&item_name=9M2PJU-Battery-Drain-Calculator)
+[![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://paypal.me/9M2PJU)
